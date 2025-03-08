@@ -1,7 +1,6 @@
 import pytest
-from sqlmodel import Session
 
-from app.core.database import engine, get_session
+from app.core.database import get_session
 
 
 def test_get_session(mocker):
@@ -15,6 +14,9 @@ def test_get_session(mocker):
     mock_engine = mocker.patch("app.core.database.engine", autospec=True)
     # Create a mock session instance
     mock_session_instance = mock_session.return_value.__enter__.return_value
+
+    # Ensure mock_session_instance is not None
+    assert mock_session_instance is not None, "Mock session instance is None"
 
     # Act
     # Call the get_session function
