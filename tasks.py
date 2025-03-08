@@ -29,30 +29,28 @@ def clean(c: Context) -> None:
     c.run("find app tests -name 'requests.json' -delete")
     c.run("find app tests -name '*.log' -delete")
     c.run("find app tests -name '.coverage' -delete")
-    c.run(
-        "find app tests -name '.pytest_cache' -type d -exec rm -r {} +"
-    )
+    c.run("find app tests -name '.pytest_cache' -type d -exec rm -r {} +")
     c.run("find app tests -name 'logs' -type d -exec rm -r {} +")
     c.run("find app tests -name '*.egg-info' -type d -exec rm -r {} +")
     c.run("find app tests -name 'htmlReport' -type d -exec rm -r {} +")
     c.run("find app tests -name 'htmlcov' -type d -exec rm -r {} +")
 
-    c.run(
-        "rm -f .coverage output.json output.txt *.log junit.xml coverage.xml app.log"
-    )
+    c.run("rm -f .coverage output.json output.txt *.log junit.xml coverage.xml app.log")
     c.run("rm -rf logs/ dist/ build/ *.egg-info/ htmlcov/ htmlReport/")
 
 
 @task(aliases=["f"])
 def format_code(c: Context):
     """Format the codebase using black."""
-    print("Formatting code with black...")
-    c.run("black .")
+    print("Sorting imports with isort ...")
     c.run("isort .")
+
+    print("Formatting code with black ...")
+    c.run("black .")
     print("Code formatting complete.")
 
 
-@task(aliases=["l"], pre=[format_code])
+@task(aliases=["l"])
 def lint(c: Context):
     """Run pylint and flake8 on the codebase."""
     print("Running pylint...")
@@ -76,17 +74,11 @@ def test(c: Context):
 
 
 @task(aliases=["v"])
-def coverage(c):
-    """Runs PyTest unit and integration tests with coverage."""
-    c.run("coverage run -m pytest tests/unit")
-    c.run("coverage lcov -o ./coverage/lcov.info")
-
-
-@task(aliases=["v"])
 def coverage(c: Context) -> None:
     """Run tests with coverage."""
     c.run("echo 'Running tests with coverage ...'")
-    c.run("pytest --cov=lambda_kit --cov-report=term-missing tests/")
+    c.run("pytest --cov=app --cov-report=term-missing tests/")
+    c.run("coverage lcov -o ./coverage/lcov.info")
     c.run("coverage report")
     c.run("coverage xml")
 
@@ -231,9 +223,7 @@ def parse_radon_output(output: str) -> Dict[Optional[str], any]:
     output = output.replace("\x1b[0m", "")
 
     # Regular expression to match the lines with complexity information
-    pattern = re.compile(
-        r"^\s*(\w)\s(\d+:\d+)\s([\w_]+)\s-\s([A-F])\s\((\d+)\)$"
-    )
+    pattern = re.compile(r"^\s*(\w)\s(\d+:\d+)\s([\w_]+)\s-\s([A-F])\s\((\d+)\)$")
 
     # Dictionary to store the results
     results: Dict[Optional[str], any] = {}
