@@ -70,7 +70,7 @@ def commitlint(c: Context):
 def test(c: Context):
     """Run pytest on the tests/ directory."""
     print("Running pytest...")
-    c.run("pytest tests/")
+    c.run("pytest --cov=app --cov-report=xml tests/unit/")
 
 
 @task(aliases=["v"])
