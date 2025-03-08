@@ -1,5 +1,7 @@
 from sqlmodel import Session, select
-from app.models.user import User
+
+from app.models import User
+
 
 class UserRepository:
     def __init__(self, session: Session):
