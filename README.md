@@ -1,6 +1,6 @@
 # Test Results API
 
-A brief description of what your project does and who it's for.
+The Test Results API is a FastAPI-based application designed to manage and retrieve test results. It provides endpoints for creating, updating, retrieving, and deleting test results, making it suitable for educational institutions, testing centers, and other organizations that need to handle test data efficiently.
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@ A brief description of what your project does and who it's for.
 
 ## Installation
 
-Instructions on how to install and set up your project.
+Follow these steps to install and set up the Test Results API on your local machine.
 
 ```shell
 # Clone the repository
@@ -36,7 +36,7 @@ uvicorn app.main:app --reload
 
 ## Usage
 
-Instructions on how to use your project.
+Here are some example commands to interact with the Test Results API.
 
 ```shell
 # Example command
@@ -45,7 +45,7 @@ curl -X GET "http://127.0.0.1:8000/items/" -H  "accept: application/json"
 
 ## API Endpoints
 
-A list of your API endpoints and their descriptions
+Below is a list of available API endpoints and their descriptions.
 
 - GET /items/ - Retrieves a list of items.
 - POST /items/ - Creates a new item.
@@ -55,7 +55,7 @@ A list of your API endpoints and their descriptions
 
 ## Contributing
 
-Guidelines for contributing to your project.
+Contributions are welcome! Please follow these guidelines to contribute to the Test Results API project.
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-branch`).
