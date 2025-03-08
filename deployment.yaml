@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-results-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: test-results-api
+  template:
+    metadata:
+      labels:
+        app: test-results-api
+    spec:
+      containers:
+        - name: test-results-api
+          image: your-docker-image:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: test-results-config
+
+          # 🚀 NEW: Startup Probe
+          startupProbe:
+            httpGet:
+              path: /healthz/startup
+              port: 8000
+            failureThreshold: 30  # Fail after 30 unsuccessful attempts
+            periodSeconds: 5       # Check every 5 seconds
+
+          # ✅ Liveness Probe
+          livenessProbe:
+            httpGet:
+              path: /healthz/live
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          # ✅ Readiness Probe
+          readinessProbe:
+            httpGet:
+              path: /healthz/ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5

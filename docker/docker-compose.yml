@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14
+    container_name: test_results_db
+    restart: always
+    environment:
+      POSTGRES_USER: your_user
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: test_results
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: test_results_api
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://your_user:your_password@db:5432/test_results
+
+volumes:
+  postgres_data:
