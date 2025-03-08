@@ -1,1 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="0.042" timestamp="2025-03-08T16:09:38.702091-05:00" hostname="Omars-Mac-Studio.local"><testcase classname="tests.unit.test_example" name="test_example" time="0.001" /></testsuite></testsuites>
