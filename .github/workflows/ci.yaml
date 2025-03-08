@@ -33,7 +33,7 @@ jobs:
         run: npm run lint
 
       - name: Configure Git Safe Directory
-        run: git config --global --add safe.directory /__w/astrocompute/astrocompute
+        run: git config --global --add safe.directory /__w/test-results-api/test-results-api
 
       - name: Run CommitLint
         run: git log -1 --pretty=%B | npx commitlint
