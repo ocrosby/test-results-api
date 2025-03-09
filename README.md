@@ -51,11 +51,33 @@ curl -X GET "http://127.0.0.1:8000/items/" -H  "accept: application/json"
 
 Below is a list of available API endpoints and their descriptions.
 
-- GET /items/ - Retrieves a list of items.
-- POST /items/ - Creates a new item.
-- GET /items/{id} - Retrieves an item by ID.
-- PUT /items/{id} - Updates an item by ID.
-- DELETE /items/{id} - Deletes an item by ID.
+### **Authentication**
+- **POST** `/auth/register/` - Registers a new user.
+- **POST** `/auth/login/` - Logs in a user and returns a JWT token.
+
+### **Test Suites**
+- **GET** `/test-suites/` - Retrieves a list of test suites.
+- **POST** `/test-suites/` - Creates a new test suite.
+- **GET** `/test-suites/{id}/` - Retrieves a test suite by ID.
+
+### **Test Classes**
+- **GET** `/test-classes/` - Retrieves a list of test classes.
+- **POST** `/test-classes/` - Creates a new test class.
+- **GET** `/test-classes/{id}/` - Retrieves a test class by ID.
+
+### **Test Cases**
+- **GET** `/test-cases/` - Retrieves a list of test cases.
+- **POST** `/test-cases/` - Creates a new test case.
+- **GET** `/test-cases/{id}/` - Retrieves a test case by ID.
+
+### **Test Executions**
+- **POST** `/test-executions/` - Associates a test case with a test suite and class.
+- **GET** `/test-suites/{suite_id}/test-cases/` - Retrieves all test cases in a given test suite.
+
+### **Kubernetes Probes**
+- **GET** `/healthz/live/` - Liveness probe to check if the API is running.
+- **GET** `/healthz/ready/` - Readiness probe to check if the API is ready to receive traffic.
+- **GET** `/healthz/startup/` - Startup probe to check if the API has fully started.
 
 ## Contributing
 
