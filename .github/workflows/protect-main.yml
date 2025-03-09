@@ -1,0 +1,17 @@
+name: Restrict Direct Pushes to Main
+
+on: [push]
+
+jobs:
+  protect-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Block Unauthorized Direct Push
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            AUTHOR=$(git log -1 --pretty=format:'%an')
+            if [[ "$AUTHOR" != "github-actions" ]]; then
+              echo "❌ Direct push to main is not allowed! Only the semantic-release bot can push."
+              exit 1
+            fi
+          fi
