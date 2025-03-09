@@ -11,13 +11,15 @@ license = {text = "MIT"}
 readme = "README.md"
 dependencies = [
     "click",
-    "fastapi",
+    "fastapi>=0.115.11",
+    "loguru",
     "passlib[bcrypt]",
     "prometheus-fastapi-instrumentator",
     "psycopg2-binary",
     "pyjwt",
     "python-dotenv",
     "requests",
+    "starlette>=0.46.1",
     "sqlmodel",
     "uvicorn[standard]",
 ]
@@ -46,7 +48,7 @@ exclude = ["__pycache__", "*.pyc", "*.pyo"]
 
 [tool.black]
 line-length = 88
-target-version = ['py311']
+target-version = ['py312']
 
 [tool.isort]
 profile = "black"

@@ -3,7 +3,7 @@ from sqlmodel import Session
 
 from app import get_session
 
-router = APIRouter(prefix="/healthz", tags=["Kubernetes Probes"])
+router = APIRouter()
 
 
 @router.get("/live", status_code=200)

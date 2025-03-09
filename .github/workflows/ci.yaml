@@ -42,7 +42,7 @@ jobs:
   lint-and-test-python:
     runs-on: ubuntu-24.04
     container:
-      image: python:3.13
+      image: python:3.12
 
     steps:
       - name: Checkout repository
