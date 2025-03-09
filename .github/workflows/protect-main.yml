@@ -6,6 +6,9 @@ jobs:
   protect-main:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Block Unauthorized Direct Push
         run: |
           if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
