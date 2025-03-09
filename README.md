@@ -1,5 +1,9 @@
 # Test Results API
 
+[![Continuous Integration](https://github.com/ocrosby/test-results-api/actions/workflows/ci.yaml/badge.svg)](https://github.com/ocrosby/test-results-api/actions/workflows/ci.yaml)
+[![Release](https://github.com/ocrosby/test-results-api/actions/workflows/release.yaml/badge.svg)](https://github.com/ocrosby/test-results-api/actions/workflows/release.yaml)
+[![codecov](https://codecov.io/gh/ocrosby/test-results-api/graph/badge.svg?token=LNKA3RTD4K)](https://codecov.io/gh/ocrosby/test-results-api)
+
 The Test Results API is a FastAPI-based application designed to manage and retrieve test results. It provides endpoints for creating, updating, retrieving, and deleting test results, making it suitable for educational institutions, testing centers, and other organizations that need to handle test data efficiently.
 
 ## Table of Contents
