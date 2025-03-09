@@ -1,15 +1,20 @@
 import os
+
 import pytest
 from sqlmodel import Session
-from app.core.database import get_session, get_engine
+
+from app.core.database import get_engine, get_session
+
 
 @pytest.fixture
 def mock_get_engine(mocker):
     return mocker.patch("app.core.database.get_engine", autospec=True)
 
+
 @pytest.fixture
 def mock_session(mocker):
     return mocker.patch("app.core.database.Session", autospec=True)
+
 
 def test_get_session(mock_get_engine, mock_session):
     """
@@ -17,7 +22,7 @@ def test_get_session(mock_get_engine, mock_session):
     """
     # Arrange
     # Set the DATABASE_URL environment variable
-    os.environ['DATABASE_URL'] = 'sqlite:///test.db'
+    os.environ["DATABASE_URL"] = "sqlite:///test.db"
 
     # Ensure the mock get_engine returns a mock engine
     mock_engine_instance = mock_get_engine.return_value

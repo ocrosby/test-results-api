@@ -16,6 +16,7 @@ db_name = os.getenv("POSTGRES_DB")
 # Construct the database URL iteratively
 DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
 
+
 def get_engine():
     """
     Get a new SQLAlchemy engine instance
@@ -24,6 +25,7 @@ def get_engine():
     :return:
     """
     return create_engine(DATABASE_URL)
+
 
 # Dependency to get a new session for each request
 def get_session():
