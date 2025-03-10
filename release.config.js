@@ -13,11 +13,11 @@ module.exports = {
           { path: "dist/*.tar.gz", label: "Source Tarballs" },
           { path: "dist/*.whl", label: "Wheels" }
         ],
-        succcessComment: false,
+        successComment: false,
         failComment: false,
         addReleases: "bottom",
         releasedLabels: ["released"],
-        createRelease: "pr"
+        createRelease: true
       }
     ],
     [
@@ -25,7 +25,7 @@ module.exports = {
       {
         prepareCmd: "python3 update_version.py ${nextRelease.version}",
         successCmd: "echo 'Successfully released ${nextRelease.version}'",
-        publishCmd: "echo 'version_changed=true' >> $GITHUB_OUTPUT"
+        publishCmd: "echo 'version_changed=true' >> $GITHUB_ENV"
       }
     ],
     [
