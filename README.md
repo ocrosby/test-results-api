@@ -6,6 +6,9 @@
 
 The Test Results API is a FastAPI-based application designed to manage and retrieve test results. It provides endpoints for creating, updating, retrieving, and deleting test results, making it suitable for educational institutions, testing centers, and other organizations that need to handle test data efficiently.
 
+You can reference individual [Markdown documents](./docs/index.md) I've added to the `docs` directory
+to learn more about concepts I've run into while working on this project.
+
 ## Table of Contents
 
 - [Installation](#installation)
