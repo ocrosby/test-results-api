@@ -53,26 +53,43 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Create virtual environment
+      - name: Setup
         run: |
           python3 -m venv venv
-        shell: bash
-
-      - name: Install Dependencies
-        run: |
           source venv/bin/activate
           npm install --no-fund
           python3 -m pip install --upgrade pip
           python3 -m pip install flit invoke build twine
-          FLIT_ROOT_INSTALL=1 invoke install --prod
-          pip list
+          FLIT_ROOT_INSTALL=1 invoke install
+          git config --global --add safe.directory /__w/test-results-api/test-results-api
         shell: bash
 
-      - name: Configure Git Safe Directory
-        run: git config --global --add safe.directory /__w/astrocompute/astrocompute
+      - name: Analyze Syntax
+        id: syntax
+        run: |
+          git log -1 --pretty=%B | npx commitlint
+          npm run lint
+          source venv/bin/activate
+          invoke lint
+        shell: bash
+
+      - name: Validate Complexity
+        id: complexity
+        run: |
+          source venv/bin/activate
+          invoke check-complexity --max-complexity 12
+        shell: bash
+
+      - name: Unit Test
+        id: unittest
+        run: |
+          source venv/bin/activate
+          invoke test
+        shell: bash
 
       - name: Run Semantic Release
         id: semantic_release
+        if: steps.syntax.conclusion == 'success' && steps.complexity.conclusion == 'success' && steps.unittest.conclusion == 'success'
         env:
           DEBUG: semantic-release:*
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -85,16 +102,29 @@ jobs:
       - name: Check if a release is needed
         run: |
           echo "version_changed=${{ steps.semantic_release.outputs.version_changed }}"
-          echo "outcome=${{ steps.semantic_release.outcome }}"        
+          echo "outcome=${{ steps.semantic_release.outcome }}"
 
-      - name: Conditionally Build and Deploy Package
+      - name: Login to Container Registry
         if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+
+      - name: Build Docker Image
+        if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
         run: |
-            echo "Deploying to PyPI..."
-            source venv/bin/activate 
-            invoke build
-            python3 -m twine upload --repository pypi dist/*
+          docker build -t ghcr.io/${{ github.repository }}/test-results-api:latest .
         shell: bash
+
+      - name: Tag Docker Image with Version
+        if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
+        run: |
+          docker tag ghcr.io/${{ github.repository }}/test-results-api:latest ghcr.io/${{ github.repository }}/test-results-api:${{ steps.semantic_release.outputs.nextRelease.version }}
+        shell: bash
+
+      - name: Push Docker Image
+        if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
+        run: |
+          docker push ghcr.io/${{ github.repository }}/test-results-api:latest
