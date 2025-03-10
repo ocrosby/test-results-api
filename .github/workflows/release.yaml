@@ -3,6 +3,8 @@ name: Release
 on:
   workflow_run:
     workflows: ["Continuous Integration"] # Matches name in ci.yaml
+    branches:
+      - main # Only trigger when CI completes on main
     types:
       - completed
   workflow_dispatch:
