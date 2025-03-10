@@ -21,6 +21,7 @@ dependencies = [
     "requests",
     "starlette>=0.46.1",
     "sqlmodel",
+    "toml",
     "uvicorn[standard]",
 ]
 

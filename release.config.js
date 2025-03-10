@@ -30,7 +30,6 @@ module.exports = {
           "CHANGELOG.md",
           "pyproject.toml",
           "VERSION",
-          "docs/source/conf.py",
           "package.json",
           "package-lock.json"
         ],
