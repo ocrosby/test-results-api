@@ -87,6 +87,12 @@ jobs:
           invoke test
         shell: bash
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: ocrosby/test-results-api
+
       - name: Run Semantic Release
         id: semantic_release
         if: steps.syntax.conclusion == 'success' && steps.complexity.conclusion == 'success' && steps.unittest.conclusion == 'success'
@@ -97,12 +103,9 @@ jobs:
           source venv/bin/activate
           set -e  # Stop on the first error
           npx semantic-release
-        shell: bash
-
-      - name: Check if a release is needed
-        run: |
           echo "version_changed=${{ steps.semantic_release.outputs.version_changed }}"
           echo "outcome=${{ steps.semantic_release.outcome }}"
+        shell: bash
 
       - name: Login to Container Registry
         if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
@@ -112,19 +115,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
-      - name: Build Docker Image
+      - name: Build, Tag, and Push Docker Image
         if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
         run: |
           docker build -t ghcr.io/${{ github.repository }}/test-results-api:latest .
-        shell: bash
-
-      - name: Tag Docker Image with Version
-        if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
-        run: |
           docker tag ghcr.io/${{ github.repository }}/test-results-api:latest ghcr.io/${{ github.repository }}/test-results-api:${{ steps.semantic_release.outputs.nextRelease.version }}
+          docker push ghcr.io/${{ github.repository }}/test-results-api:latest
+          docker push ghcr.io/${{ github.repository }}/test-results-api:${{ steps.semantic_release.outputs.nextRelease.version }}
         shell: bash
 
-      - name: Push Docker Image
-        if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
-        run: |
-          docker push ghcr.io/${{ github.repository }}/test-results-api:latest
