@@ -22,7 +22,7 @@ jobs:
     container:
       image: node:lts
     concurrency:
-      group: ci-${{ github.head_ref || github.ref }}
+      group: lint-javascript-${{ github.head_ref || github.ref }}
       cancel-in-progress: true
 
     steps:
@@ -55,7 +55,7 @@ jobs:
     container:
       image: python:3.12
     concurrency:
-      group: ci-${{ github.head_ref || github.ref }}
+      group: lint-and-test-python-${{ github.head_ref || github.ref }}
       cancel-in-progress: true
 
     steps:
