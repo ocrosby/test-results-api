@@ -102,19 +102,7 @@ jobs:
       - name: Check if a release is needed
         run: |
           echo "version_changed=${{ steps.semantic_release.outputs.version_changed }}"
-          echo "outcome=${{ steps.semantic_release.outcome }}"        
-
-      - name: Conditionally Build and Deploy Package
-        if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: |
-            echo "Deploying to PyPI..."
-            source venv/bin/activate 
-            invoke build
-            python3 -m twine upload --repository pypi dist/*
-        shell: bash
+          echo "outcome=${{ steps.semantic_release.outcome }}"
 
       - name: Login to Container Registry
         if: steps.semantic_release.outcome == 'success' && steps.semantic_release.outputs.version_changed == 'true'

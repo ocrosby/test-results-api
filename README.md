@@ -79,6 +79,14 @@ Below is a list of available API endpoints and their descriptions.
 - **GET** `/healthz/ready/` - Readiness probe to check if the API is ready to receive traffic.
 - **GET** `/healthz/startup/` - Startup probe to check if the API has fully started.
 
+## Environment Variables for Release Workflow
+
+The following environment variables must be set for the release workflow to function correctly:
+
+- **`GH_TOKEN`**: A GitHub token with permissions to create releases and push to the repository. This token is used by the `semantic-release` tool and the `docker/login-action` to authenticate with GitHub.
+
+These environment variables should be stored as secrets in your GitHub repository to ensure they are kept secure.
+
 ## Contributing
 
 Contributions are welcome! Please follow these guidelines to contribute to the Test Results API project.
