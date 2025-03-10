@@ -1,9 +1,12 @@
 name: Release
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Continuous Integration"] # Matches name in ci.yaml
     branches:
-      - 'main'
+      - main # Only trigger when CI completes on main
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -35,23 +38,6 @@ jobs:
       - name: Configure Git Safe Directory
         run: |
           git config --global --add safe.directory /__w/test-results-api/test-results-api
-
-#      - name: Debug Commit Author
-#        run: |
-#          git log -1
-#        shell: bash
-#
-#      - name: Block Unauthorized Direct Push
-#        run: |
-#          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
-#            AUTHOR=$(git log -1 --pretty=format:'%an')
-#            echo "Author of the last commit: $AUTHOR"
-#            if [[ "$AUTHOR" != "github-actions" ]]; then
-#              echo "❌ Direct push to main is not allowed! Only the semantic-release bot can push."
-#              exit 1
-#            fi
-#          fi
-#        shell: bash
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

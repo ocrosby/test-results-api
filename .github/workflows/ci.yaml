@@ -3,9 +3,13 @@ name: Continuous Integration
 on:
   push:
     branches:
+      - 'main'
       - 'feature/**'
       - 'bugfix/**'
       - 'hotfix/**'
+  pull_request:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
