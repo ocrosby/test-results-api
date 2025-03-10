@@ -32,6 +32,10 @@ jobs:
           ref: ${{ github.ref }}
           clean: true
 
+      - name: Configure Git Safe Directory
+        run: |
+          git config --global --add safe.directory /__w/test-results-api/test-results-api
+
       - name: Block Unauthorized Direct Push
         run: |
           if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
@@ -72,7 +76,6 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install flit invoke build twine
           FLIT_ROOT_INSTALL=1 invoke install
-          git config --global --add safe.directory /__w/test-results-api/test-results-api
         shell: bash
 
       - name: Analyze Syntax
