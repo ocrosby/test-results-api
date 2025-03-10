@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: node:lts
+    concurrency:
+      group: ci-${{ github.head_ref || github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout repository
@@ -51,6 +54,9 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: python:3.12
+    concurrency:
+      group: ci-${{ github.head_ref || github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout repository
