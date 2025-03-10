@@ -27,31 +27,6 @@ jobs:
           sudo apt update && sudo apt install gh -y
         shell: bash
 
-      - name: Wait for Required Status Checks
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          REPO=${{ github.repository }}
-
-          echo "Waiting for required status checks to pass for PR #$PR_NUMBER..."
-          
-          while true; do
-            STATUS=$(gh pr view "$PR_NUMBER" --repo "$REPO" --json mergeStateStatus -q '.mergeStateStatus')
-
-            if [[ "$STATUS" == "CLEAN" ]]; then
-              echo "All checks have passed. Proceeding with merge."
-              break
-            elif [[ "$STATUS" == "BLOCKED" ]]; then
-              echo "PR is blocked due to required checks. Retrying in 30 seconds..."
-              sleep 30
-            else
-              echo "PR is in an unknown state: $STATUS. Retrying in 30 seconds..."
-              sleep 30
-            fi
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-
       - name: Perform Merge
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --merge --admin
