@@ -12,6 +12,10 @@ on:
       - 'main'
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true  # Ensures only the latest run is active
+
 jobs:
   lint-javascript:
     runs-on: ubuntu-24.04
