@@ -24,7 +24,7 @@ jobs:
 
       - name: Install GitHub CLI
         run: |
-          curl -sSL https://cli.github.com/install.sh | sh
+          sudo apt update && sudo apt install gh -y
         shell: bash
 
       - name: Authenticate GitHub CLI
