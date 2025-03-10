@@ -12,7 +12,12 @@ module.exports = {
         assets: [
           { path: "dist/*.tar.gz", label: "Source Tarballs" },
           { path: "dist/*.whl", label: "Wheels" }
-        ]
+        ],
+        succcessComment: false,
+        failComment: false,
+        addReleases: "bottom",
+        releasedLabels: ["released"],
+        createRelease: "pr"
       }
     ],
     [
